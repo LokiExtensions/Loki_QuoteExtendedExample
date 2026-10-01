@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="loki-checkout.customer">
+            <block
+                name="loki-checkout.customer.example_field" as="example_field"
+                after="loki-checkout.customer.customer_gender"
+                template="Loki_FieldComponents::form/field.phtml">
+                <arguments>
+                    <argument name="field_label" xsi:type="string" translate="true">Example field</argument>
+                    <argument name="required" xsi:type="boolean">false</argument>
+                    <argument name="maxlength" xsi:type="number">255</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

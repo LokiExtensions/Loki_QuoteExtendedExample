@@ -1,0 +1,20 @@
+<?php
+declare(strict_types=1);
+
+use Loki\QuoteExtended\ViewModel\CheckoutQuoteExtendedView;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var CheckoutQuoteExtendedView $viewModel */
+$viewModel = $block->getViewModel();
+$value = $viewModel->getValue('example_field');
+if ($value === '') {
+    return;
+}
+?>
+<div>
+    <span><?= $escaper->escapeHtml(__('Example field')) ?></span>:
+    <?= $escaper->escapeHtml($value) ?>
+</div>

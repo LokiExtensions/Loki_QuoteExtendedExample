@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="loki-checkout.sidebar.preview.quote_details">
+            <block
+                name="loki-checkout.sidebar.preview.quote_details.example_field" as="example_field"
+                after="loki-checkout.sidebar.preview.quote_details.customer_gender"
+                template="Loki_QuoteExtendedExample::checkout/sidebar/example-field.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Loki\QuoteExtended\ViewModel\CheckoutQuoteExtendedView</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>
