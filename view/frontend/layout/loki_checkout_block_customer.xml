@@ -9,7 +9,9 @@
                 <arguments>
                     <argument name="field_label" xsi:type="string" translate="true">Example field</argument>
                     <argument name="required" xsi:type="boolean">false</argument>
-                    <argument name="maxlength" xsi:type="number">255</argument>
+                    <argument name="field_attributes" xsi:type="array">
+                        <item name="maxlength" xsi:type="string">255</item>
+                    </argument>
                 </arguments>
             </block>
         </referenceBlock>
