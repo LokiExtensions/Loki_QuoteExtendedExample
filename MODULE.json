@@ -12,7 +12,16 @@
     ],
     "skip_magento_versions": [],
     "skip_css_utils": false,
-    "sequence": [],
+    "sequence": [
+        "LokiCheckout_Core",
+        "Loki_FieldComponents",
+        "Loki_QuoteExtended",
+        "Magento_Email",
+        "Magento_Sales"
+    ],
     "phpcs_severity": 10,
-    "phpstan_level": 1
+    "phpstan_level": 1,
+    "components": [
+        "loki-checkout.customer.example_field"
+    ]
 }
