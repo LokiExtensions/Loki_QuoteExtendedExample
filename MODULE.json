@@ -45,7 +45,7 @@
     "tests": {
         "unit": 0,
         "integration": 4,
-        "functional": 0
+        "functional": 1
     },
     "module_name": "Loki_QuoteExtendedExample",
     "composer_name": "loki-checkout/magento2-quote-extended-example",
