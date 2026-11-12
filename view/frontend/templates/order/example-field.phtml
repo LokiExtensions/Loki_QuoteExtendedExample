@@ -1,0 +1,20 @@
+<?php
+declare(strict_types=1);
+
+use Loki\QuoteExtended\ViewModel\OrderQuoteExtendedView;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var OrderQuoteExtendedView $viewModel */
+$viewModel = $block->getViewModel();
+$value = $viewModel->getValue('example_field');
+if ($value === '') {
+    return;
+}
+?>
+<div class="loki-quote-extended-example-field" data-role="loki-quote-extended-example-field">
+    <strong><?= $escaper->escapeHtml(__('Example field')) ?>:</strong>
+    <span><?= $escaper->escapeHtml($value) ?></span>
+</div>

@@ -12,8 +12,10 @@
         "loki-checkout/magento2-quote-extended": "~0.0",
         "loki/magento2-field-components": "^2.2",
         "magento/framework": "^103.0",
+        "magento/module-checkout": "^100.4",
         "magento/module-email": "^101.1",
         "magento/module-sales": "^103.0",
+        "magento/module-shipping": "^100.4",
         "php": ">=8.2 <8.6"
     },
     "require-dev": {
