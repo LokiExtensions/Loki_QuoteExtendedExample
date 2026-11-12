@@ -4,4 +4,8 @@
     <template id="sales_email_order_guest_template" label="New Order for Guest" file="order_new_guest.html" type="html" module="Loki_QuoteExtendedExample" area="frontend"/>
     <template id="sales_email_invoice_template" label="New Invoice" file="invoice_new.html" type="html" module="Loki_QuoteExtendedExample" area="frontend"/>
     <template id="sales_email_invoice_guest_template" label="New Invoice for Guest" file="invoice_new_guest.html" type="html" module="Loki_QuoteExtendedExample" area="frontend"/>
+    <template id="sales_email_shipment_template" label="New Shipment" file="shipment_new.html" type="html" module="Loki_QuoteExtendedExample" area="frontend"/>
+    <template id="sales_email_shipment_guest_template" label="New Shipment for Guest" file="shipment_new_guest.html" type="html" module="Loki_QuoteExtendedExample" area="frontend"/>
+    <template id="sales_email_creditmemo_template" label="New Credit Memo" file="creditmemo_new.html" type="html" module="Loki_QuoteExtendedExample" area="frontend"/>
+    <template id="sales_email_creditmemo_guest_template" label="New Credit Memo for Guest" file="creditmemo_new_guest.html" type="html" module="Loki_QuoteExtendedExample" area="frontend"/>
 </config>
