@@ -15,7 +15,9 @@ use Magento\Checkout\Test\Fixture\SetShippingAddress as SetShippingAddressFixtur
 use Magento\Quote\Test\Fixture\AddProductToCart as AddProductToCartFixture;
 use Magento\Quote\Test\Fixture\GuestCart as GuestCartFixture;
 use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Test\Fixture\Creditmemo as CreditmemoFixture;
 use Magento\Sales\Test\Fixture\Invoice as InvoiceFixture;
+use Magento\Sales\Test\Fixture\Shipment as ShipmentFixture;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Fixture\DbIsolation;
@@ -67,6 +69,53 @@ class SalesViewTest extends AbstractBackendController
         $invoice = DataFixtureStorageManager::getStorage()->get('invoice');
 
         $this->dispatch('backend/sales/invoice/view/invoice_id/' . (int)$invoice->getId());
+
+        $this->assertMatchesRegularExpression(self::ROW_PATTERN, $this->getResponse()->getBody());
+    }
+
+    #[
+        DbIsolation(true),
+        DataFixture(ProductFixture::class, as: 'product'),
+        DataFixture(GuestCartFixture::class, as: 'cart'),
+        DataFixture(AddProductToCartFixture::class, ['cart_id' => '$cart.id$', 'product_id' => '$product.id$', 'qty' => 1]),
+        DataFixture(SetBillingAddressFixture::class, ['cart_id' => '$cart.id$']),
+        DataFixture(SetShippingAddressFixture::class, ['cart_id' => '$cart.id$']),
+        DataFixture(SetGuestEmailFixture::class, ['cart_id' => '$cart.id$']),
+        DataFixture(SetDeliveryMethodFixture::class, ['cart_id' => '$cart.id$']),
+        DataFixture(SetPaymentMethodFixture::class, ['cart_id' => '$cart.id$']),
+        DataFixture(PlaceOrderFixture::class, ['cart_id' => '$cart.id$'], as: 'order'),
+        DataFixture(ShipmentFixture::class, ['order_id' => '$order.id$'], as: 'shipment'),
+    ]
+    public function testShipmentViewShowsValue(): void
+    {
+        $this->getOrderWithValue();
+        $shipment = DataFixtureStorageManager::getStorage()->get('shipment');
+
+        $this->dispatch('backend/admin/order_shipment/view/shipment_id/' . (int)$shipment->getId());
+
+        $this->assertMatchesRegularExpression(self::ROW_PATTERN, $this->getResponse()->getBody());
+    }
+
+    #[
+        DbIsolation(true),
+        DataFixture(ProductFixture::class, as: 'product'),
+        DataFixture(GuestCartFixture::class, as: 'cart'),
+        DataFixture(AddProductToCartFixture::class, ['cart_id' => '$cart.id$', 'product_id' => '$product.id$', 'qty' => 1]),
+        DataFixture(SetBillingAddressFixture::class, ['cart_id' => '$cart.id$']),
+        DataFixture(SetShippingAddressFixture::class, ['cart_id' => '$cart.id$']),
+        DataFixture(SetGuestEmailFixture::class, ['cart_id' => '$cart.id$']),
+        DataFixture(SetDeliveryMethodFixture::class, ['cart_id' => '$cart.id$']),
+        DataFixture(SetPaymentMethodFixture::class, ['cart_id' => '$cart.id$']),
+        DataFixture(PlaceOrderFixture::class, ['cart_id' => '$cart.id$'], as: 'order'),
+        DataFixture(InvoiceFixture::class, ['order_id' => '$order.id$'], as: 'invoice'),
+        DataFixture(CreditmemoFixture::class, ['order_id' => '$order.id$'], as: 'creditmemo'),
+    ]
+    public function testCreditmemoViewShowsValue(): void
+    {
+        $this->getOrderWithValue();
+        $creditmemo = DataFixtureStorageManager::getStorage()->get('creditmemo');
+
+        $this->dispatch('backend/sales/creditmemo/view/creditmemo_id/' . (int)$creditmemo->getId());
 
         $this->assertMatchesRegularExpression(self::ROW_PATTERN, $this->getResponse()->getBody());
     }

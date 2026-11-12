@@ -13,8 +13,10 @@ use Magento\Checkout\Test\Fixture\SetPaymentMethod as SetPaymentMethodFixture;
 use Magento\Checkout\Test\Fixture\SetShippingAddress as SetShippingAddressFixture;
 use Magento\Quote\Test\Fixture\AddProductToCart as AddProductToCartFixture;
 use Magento\Quote\Test\Fixture\GuestCart as GuestCartFixture;
+use Magento\Sales\Model\Order\Email\Sender\CreditmemoSender;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Sales\Model\Order\Email\Sender\OrderSender;
+use Magento\Sales\Model\Order\Email\Sender\ShipmentSender;
 use Magento\TestFramework\Fixture\AppArea;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
@@ -67,6 +69,43 @@ class SalesEmailTest extends TestCase
         $this->assertStringContainsString(self::ESCAPED_VALUE, $body);
     }
 
+    public function testShipmentEmailShowsValue(): void
+    {
+        $cartId = $this->getCartId();
+        $this->saveQuoteExtended($cartId, ['example_field' => self::VALUE]);
+        $shipment = $this->createShipment($this->placeOrder($cartId));
+
+        $body = $this->sendAndGetBody(fn () => $this->get(ShipmentSender::class)->send($shipment, true));
+
+        $this->assertStringContainsString('Example field', $body);
+        $this->assertStringContainsString(self::ESCAPED_VALUE, $body);
+        $this->assertStringNotContainsString(self::VALUE, $body);
+    }
+
+    public function testCreditmemoEmailShowsValue(): void
+    {
+        $cartId = $this->getCartId();
+        $this->saveQuoteExtended($cartId, ['example_field' => self::VALUE]);
+        $order = $this->placeOrder($cartId);
+        $this->createInvoice($order);
+        $creditmemo = $this->createCreditmemo($order);
+
+        $body = $this->sendAndGetBody(fn () => $this->get(CreditmemoSender::class)->send($creditmemo, true));
+
+        $this->assertStringContainsString('Example field', $body);
+        $this->assertStringContainsString(self::ESCAPED_VALUE, $body);
+        $this->assertStringNotContainsString(self::VALUE, $body);
+    }
+
+    public function testShipmentEmailHidesEmptyValue(): void
+    {
+        $shipment = $this->createShipment($this->placeOrder($this->getCartId()));
+
+        $body = $this->sendAndGetBody(fn () => $this->get(ShipmentSender::class)->send($shipment, true));
+
+        $this->assertStringNotContainsString('Example field', $body);
+    }
+
     public function testOrderEmailHidesEmptyValue(): void
     {
         $order = $this->placeOrder($this->getCartId());
@@ -86,7 +125,7 @@ class SalesEmailTest extends TestCase
         $message = $transportBuilder->getSentMessage();
         $this->assertNotNull($message, 'No email was sent');
 
-        return $message->getBodyText();
+        return quoted_printable_decode($message->getBodyText());
     }
 
     private function get(string $className): object
