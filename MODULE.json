@@ -44,8 +44,8 @@
     "config": [],
     "tests": {
         "unit": 0,
-        "integration": 4,
-        "functional": 1
+        "integration": 23,
+        "functional": 20
     },
     "module_name": "Loki_QuoteExtendedExample",
     "composer_name": "loki-checkout/magento2-quote-extended-example",
@@ -61,11 +61,13 @@
         "LokiCheckout_Core",
         "Loki_FieldComponents",
         "Loki_QuoteExtended",
+        "Magento_Checkout",
         "Magento_Email",
-        "Magento_Sales"
+        "Magento_Sales",
+        "Magento_Shipping"
     ],
-    "phpcs_severity": 10,
-    "phpstan_level": 1,
+    "phpcs_severity": "1",
+    "phpstan_level": "1",
     "components": [
         "loki-checkout.customer.example_field"
     ]
