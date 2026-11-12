@@ -63,8 +63,7 @@
         "Loki_QuoteExtended",
         "Magento_Checkout",
         "Magento_Email",
-        "Magento_Sales",
-        "Magento_Shipping"
+        "Magento_Sales"
     ],
     "phpcs_severity": "1",
     "phpstan_level": "1",
