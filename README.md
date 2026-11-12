@@ -25,8 +25,9 @@ Example module for `Loki_QuoteExtended`. It adds a column `example_field` to the
 
 - as an optional field in the Loki Checkout, below the customer gender;
 - in the checkout sidebar (when filled in);
-- in the order email and the invoice email (this module overrides the 4 core templates `sales_email_order_template`, `sales_email_order_guest_template`, `sales_email_invoice_template` and `sales_email_invoice_guest_template`; these are copies of the Magento 2.4.9 templates, so they need to be kept in sync on upgrades and they replace any theme overrides of these templates);
-- on the admin order page and the admin invoice page.
+- in the order, invoice, shipment and credit memo emails (this module overrides the 8 core templates `sales_email_order_template`, `sales_email_order_guest_template`, `sales_email_invoice_template`, `sales_email_invoice_guest_template`, `sales_email_shipment_template`, `sales_email_shipment_guest_template`, `sales_email_creditmemo_template` and `sales_email_creditmemo_guest_template`; these are copies of the Magento 2.4.9 templates, so they need to be kept in sync on upgrades and they replace any theme overrides of these templates);
+- on the checkout success page and the customer account order view;
+- on the admin order, invoice, shipment and credit memo pages, via the generic labelled display of `Loki_QuoteExtended` (see `etc/adminhtml/di.xml`).
 
 
 ## Current status
