@@ -9,7 +9,7 @@
     "type": "magento2-module",
     "require": {
         "loki-checkout/magento2-core": "^2.3",
-        "loki-checkout/magento2-quote-extended": "~0.0",
+        "loki-checkout/magento2-quote-extended": "~0.0 || ^1.0",
         "loki/magento2-field-components": "^2.2",
         "magento/framework": "^103.0",
         "magento/module-checkout": "^100.4",
