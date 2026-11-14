@@ -13,6 +13,13 @@ use Magento\Checkout\Test\Fixture\SetPaymentMethod as SetPaymentMethodFixture;
 use Magento\Checkout\Test\Fixture\SetShippingAddress as SetShippingAddressFixture;
 use Magento\Quote\Test\Fixture\AddProductToCart as AddProductToCartFixture;
 use Magento\Quote\Test\Fixture\GuestCart as GuestCartFixture;
+use Magento\Sales\Api\CreditmemoRepositoryInterface;
+use Magento\Sales\Api\Data\CreditmemoInterface;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\Data\ShipmentInterface;
+use Magento\Sales\Api\RefundOrderInterface;
+use Magento\Sales\Api\ShipmentRepositoryInterface;
+use Magento\Sales\Api\ShipOrderInterface;
 use Magento\Sales\Model\Order\Email\Sender\CreditmemoSender;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Sales\Model\Order\Email\Sender\OrderSender;
@@ -73,7 +80,7 @@ class SalesEmailTest extends TestCase
     {
         $cartId = $this->getCartId();
         $this->saveQuoteExtended($cartId, ['example_field' => self::VALUE]);
-        $shipment = $this->createShipment($this->placeOrder($cartId));
+        $shipment = $this->createShipmentForEmail($this->placeOrder($cartId));
 
         $body = $this->sendAndGetBody(fn () => $this->get(ShipmentSender::class)->send($shipment, true));
 
@@ -88,7 +95,7 @@ class SalesEmailTest extends TestCase
         $this->saveQuoteExtended($cartId, ['example_field' => self::VALUE]);
         $order = $this->placeOrder($cartId);
         $this->createInvoice($order);
-        $creditmemo = $this->createCreditmemo($order);
+        $creditmemo = $this->createCreditmemoForEmail($order);
 
         $body = $this->sendAndGetBody(fn () => $this->get(CreditmemoSender::class)->send($creditmemo, true));
 
@@ -99,7 +106,7 @@ class SalesEmailTest extends TestCase
 
     public function testShipmentEmailHidesEmptyValue(): void
     {
-        $shipment = $this->createShipment($this->placeOrder($this->getCartId()));
+        $shipment = $this->createShipmentForEmail($this->placeOrder($this->getCartId()));
 
         $body = $this->sendAndGetBody(fn () => $this->get(ShipmentSender::class)->send($shipment, true));
 
@@ -126,6 +133,20 @@ class SalesEmailTest extends TestCase
         $this->assertNotNull($message, 'No email was sent');
 
         return quoted_printable_decode($message->getBodyText());
+    }
+
+    private function createShipmentForEmail(OrderInterface $order): ShipmentInterface
+    {
+        $shipmentId = $this->om()->get(ShipOrderInterface::class)->execute((int)$order->getEntityId());
+
+        return $this->om()->get(ShipmentRepositoryInterface::class)->get((int)$shipmentId);
+    }
+
+    private function createCreditmemoForEmail(OrderInterface $order): CreditmemoInterface
+    {
+        $creditmemoId = $this->om()->get(RefundOrderInterface::class)->execute((int)$order->getEntityId());
+
+        return $this->om()->get(CreditmemoRepositoryInterface::class)->get((int)$creditmemoId);
     }
 
     private function get(string $className): object
